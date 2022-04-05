@@ -31,7 +31,9 @@ async function runCommandWithXvfb(command, directory, options) {
     command = `xvfb-run --auto-servernum ${optionsArgument} ${command}`;
 
     try {
-        await runCommand(command, directory)
+        console.log("runCommand start");
+        await runCommand(command, directory);
+        console.log("runCommand done");
     } finally {
         await cleanUpXvfb();
     }
@@ -39,6 +41,7 @@ async function runCommandWithXvfb(command, directory, options) {
 
 async function cleanUpXvfb() {
     try {
+        console.log("cleanUpXvfb");
         await exec.exec("bash", [`${__dirname}/cleanup.sh`]);
     } catch {
 
@@ -46,6 +49,8 @@ async function cleanUpXvfb() {
 }
 
 async function runCommand(command, directory) {
+    console.log(`runCommand ${command} from ${directory}`);
+
     await (directory ? exec.exec(command, [], {cwd: directory}) : exec.exec(command));
 }
 
